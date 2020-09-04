@@ -1,0 +1,104 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+
+Listing: {{ item.title }}
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row p-2 mb-3">
+            <div class="col-8">
+                <h2>Listing: {{ item.title }}</h2>
+            </div>
+        </div>
+        <div>
+            <img src="{{ item.link }}" alt="listing image" style='height: 100%; width: 100%; object-fit: contain'>
+        </div>
+        <div class="row p-2">
+            <h3>Description:</h3>
+        </div>
+        <div class="row p-2">
+            <p>{{ item.description }}</p>
+        </div>
+<! -- add to watchlist>
+        <div class="row p-2">
+            {% if added %}
+            <form action="{% url 'removewatch' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{item.id}}">
+                <button class="btn btn-danger" type="submit">Remove from watchlist</button>
+            </form>
+            {% else %}
+            <form action="{% url 'addtowatch' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{item.id}}">
+                <button class="btn btn-success" type="submit">Add to watchlist</button>
+            </form>
+            {% endif %}
+        </div>
+<! -- display price>
+        <div class="row p-2">
+            <h3>Current Price: $ {{ item.price }}</h3>
+        </div>
+<! -- to close bid if you're the owner>
+        <div class="row p-2">
+        {% if user.is_authenticated %}
+        {% if owner %}     
+        <br>
+        <form action="{% url 'close' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ item.id }}">
+            <button class="btn btn-warning" type="submit">Close bid</button>
+        </form>
+        <br>
+        {% endif %}
+        {% endif %}
+        </div>
+<! -- to bid>
+        <div class="row p-2">
+        {% if user.is_authenticated %}
+            <form action="{% url 'bid' %}" method="post">
+                {% csrf_token %}
+                <! -- next line is important, as it provides bid function an id>
+                <input type="hidden" name="id" value="{{ item.id }}">
+                {{ bidform }}
+                <button class="btn-primary" type="submit">Place bid</button>
+            </form>
+
+        {% else %}
+            <p><a href="{% url 'login' %}">Sign in</a> to place a bid</p>
+        {% endif %}
+        </div>
+<! -- to provide comment>
+        <div class="row p-2">
+        {% if user.is_authenticated %}
+            <form action="{% url 'comment' %}" method="post">
+                {% csrf_token %}
+                <! -- next line is important, as it provides comment function an id>
+                <input type="hidden" name="id" value="{{ item.id }}">
+                {{ commentform }}
+                <br>
+                <button class="btn-primary" type="submit">Add comment</button>
+            </form>
+        {% else %}
+            <p><a href="{% url 'login' %}">Sign in</a> to provide comments</p>
+        {% endif %}
+        </div>
+<! -- display comment>
+        <div class="row p-2">
+            <h4>All Comments:</h4>
+        </div>
+        {% for comment in comments %}
+            <div class="row p-2 mt-2 mb-4 border shadow">
+                <p><u><em>Comment by user <strong>{{ comment.user }}</strong> </em></u><br><br>
+                {{ comment.comment }}</p>
+            </div>
+        {% empty %}
+            <div class="row p-2">
+                <p>No comments yet!</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
