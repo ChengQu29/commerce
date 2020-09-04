@@ -7,15 +7,27 @@ class User(AbstractUser):
         return f"{self.username}"
 
 class Listing(models.Model):
+    CATEGORIES = [
+        ('Cars and Vehicles', 'Cars and Vehicles'),
+        ('Furniture', 'Furniture'),
+        ('Electronics', 'Electronics'),
+        ('Tools', 'Tools'),
+        ('Books', 'Books'),
+        ('Toys', 'Toys'),
+        ('Pet', 'Pet'),
+        ('Service', 'Service'),
+        ('Other', 'Other')
+    ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=64)
-    description = models.TextField()
+    description = models.TextField(max_length=1000)
     price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    max_bid = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    link = models.CharField(max_length=64,default=None,blank=True,null=True)
+    #max_bid = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    link = models.URLField(default=True)
     time = models.CharField(max_length=64)
     winner = models.ForeignKey(User, null=True, default=None, on_delete=models.PROTECT, related_name="winning_listings")
     active = models.BooleanField(default=True)
+    category = models.CharField(blank=True, choices=CATEGORIES, max_length=64)
 
     bids = models.ManyToManyField('Bid', blank=True, related_name='bids')
     

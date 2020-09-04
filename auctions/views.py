@@ -5,16 +5,22 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
-
+from django.forms import ModelForm, Form
 from .models import User, Listing, Bid, Comment, Watchlist
 
-class createform(forms.Form):
-    item_entry = forms.CharField(label="Title", widget=forms.TextInput(attrs={
-        'placeholder': 'Enter title', 'id': 'title'}))
-    item_description = forms.CharField(widget=forms.Textarea)
-    item_price = forms.CharField(label="Price")
-    item_image = forms.URLField(required=False)
+class createform(ModelForm):
+    class Meta:
+        model = Listing
+        fields = ['title', 'description', 'price', 'link', 'category']
+        labels = {
+            'title': "Listing Title:",
+            'description': "Description\n(max 1,000 characters):",
+            'price': "Initial Price",
+            'link': "Image URL:",
+            'category': "Category (Choose one):"
+        }
 
+#the cs50web class method for creating forms
 class CommentForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea(attrs={
         'placeholder': 'Enter your comment', 'id': 'comment'}))
@@ -90,14 +96,15 @@ def create(request):
         if form.is_valid():
             m = Listing()
             # extract data from form
-            m.title = form.cleaned_data['item_entry']
-            m.price = form.cleaned_data['item_price']
-            m.description = form.cleaned_data['item_description']
+            m.title = form.cleaned_data['title']
+            m.price = form.cleaned_data['price']
+            m.description = form.cleaned_data['description']
+            m.category = form.cleaned_data['category']
             m.user = request.user
-            if not form.data['item_image']:
+            if not form.data['link']:
                 m.link = "https://thumbs.dreamstime.com/b/no-image-available-icon-photo-camera-flat-vector-illustration-132483141.jpg"
             else:
-                m.link = form.cleaned_data['item_image']
+                m.link = form.cleaned_data['link']
             m.save()
 
             return redirect('index')
