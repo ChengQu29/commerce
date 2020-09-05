@@ -22,12 +22,11 @@ class Listing(models.Model):
     title = models.CharField(max_length=64)
     description = models.TextField(max_length=1000)
     price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    #max_bid = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    link = models.URLField(default=True)
+    link = models.URLField(null=True)
     time = models.CharField(max_length=64)
     winner = models.ForeignKey(User, null=True, default=None, on_delete=models.PROTECT, related_name="winning_listings")
     active = models.BooleanField(default=True)
-    category = models.CharField(blank=True, choices=CATEGORIES, max_length=64)
+    category = models.CharField(blank=True, choices=CATEGORIES, max_length=64) #choose from the CATEGORIES
 
     bids = models.ManyToManyField('Bid', blank=True, related_name='bids')
     

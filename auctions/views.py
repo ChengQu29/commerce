@@ -199,7 +199,21 @@ def bid(request):
         return HttpResponseRedirect(reverse("index"))
 
 def categories(request):
-    pass
+    categories = []
+    for category in Listing.CATEGORIES:
+        #display the name from CATEGORIES by category[1]; category[0] is the index
+        categories.append(category[1])
+
+    return render(request, "auctions/categories.html", {
+        "categories": categories
+    })
+
+def category(request,category):
+    items = Listing.objects.filter(active=True, category=category)
+
+    return render(request, "auctions/index.html", {
+        "items": items 
+    })
 
 def addtowatch(request):
     watch = Watchlist()
