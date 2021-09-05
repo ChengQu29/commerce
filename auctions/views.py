@@ -8,7 +8,7 @@ from django import forms
 from django.forms import ModelForm, Form
 from .models import User, Listing, Bid, Comment, Watchlist
 
-class createform(ModelForm):
+class createform(ModelForm): #ModelForm is a django helper class that lets you create a form class from a django model
     class Meta:
         model = Listing
         fields = ['title', 'description', 'price', 'link', 'category']
@@ -20,20 +20,26 @@ class createform(ModelForm):
             'category': "Category (Choose one):"
         }
 
-#the cs50web class method for creating forms
+#the class method(one option) for creating forms
 class CommentForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea(attrs={
         'placeholder': 'Enter your comment', 'id': 'comment'}))
 
 class BidForm(forms.Form):
-    bid = forms.DecimalField(widget=forms.TextInput(attrs={
+    bid = forms.DecimalField(widget=forms.NumberInput(attrs={
         'placeholder': 'Enter amount', 'id': 'bid'}))
 
 def index(request):
     items = Listing.objects.filter(active=True)
-
+    try:
+        watch_items = Watchlist.objects.filter(user=request.user)
+        wcount = len(watch_items)
+        print(wcount)
+    except:
+        wcount = None
     return render(request, "auctions/index.html", {
-        "items": items #items has an id automatically assigned by django
+        "items": items, #items has an id automatically assigned by django
+        "wcount":wcount
     })
 
 def login_view(request):
@@ -89,6 +95,12 @@ def register(request):
 
 @login_required
 def create(request):
+    try:
+        items = Watchlist.objects.filter(user=request.user)
+        wcount = len(items)
+        print(wcount)
+    except:
+        wcount = None
     if request.method == 'POST':
         # get info from form
         form = createform(request.POST)
@@ -110,7 +122,8 @@ def create(request):
             return redirect('index')
     
     return render(request, "auctions/create.html", {
-        "createform": createform()
+        "createform": createform(),
+        "wcount":wcount
     })
 
 def listingpage(request, id):
@@ -204,15 +217,29 @@ def categories(request):
         #display the name from CATEGORIES by category[1]; category[0] is the index
         categories.append(category[1])
 
+    try:
+        items = Watchlist.objects.filter(user=request.user)
+        wcount = len(items)
+        print(wcount)
+    except:
+        wcount = None
     return render(request, "auctions/categories.html", {
-        "categories": categories
+        "categories": categories,
+        "wcount": wcount
     })
 
 def category(request,category):
-    items = Listing.objects.filter(active=True, category=category)
-
+    category_items = Listing.objects.filter(active=True, category=category)
+    try:
+        items = Watchlist.objects.filter(user=request.user)
+        wcount = len(items)
+        print(wcount)
+    except:
+        wcount = None
+        
     return render(request, "auctions/index.html", {
-        "items": items 
+        "items": category_items,
+        "wcount": wcount 
     })
 
 def addtowatch(request):
@@ -228,17 +255,15 @@ def removewatch(request):
     w.delete()
     return redirect('index')
 
+@login_required
 def watchlist(request):
     #watchlist has an associated user and associated listing
-    #first filter the watchlist by the associated user
-    w = Watchlist.objects.filter(user=request.user)
-    items = []
-    # find the listing 
-    for i in w:
-        items.append(Listing.objects.filter(id=i.id))
-        
+    items = Watchlist.objects.filter(user=request.user)
+    wcount=len(items)
+    #print(wcount)
     return render(request, "auctions/watchlist.html", {
-        "items": items
+        "items": items,
+        "wcount": wcount
     })
 
 def close(request):
@@ -256,6 +281,13 @@ def close(request):
 
 def win(request):
     items = Listing.objects.filter(winner=request.user)
+    try:
+        watch_items = Watchlist.objects.filter(user=request.user)
+        wcount = len(watch_items)
+        print(wcount)
+    except:
+        wcount = None
     return render(request, "auctions/winning.html", {
-        "items": items 
+        "items": items,
+        "wcount":wcount
     })

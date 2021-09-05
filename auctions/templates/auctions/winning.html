@@ -14,9 +14,9 @@
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title">{{i.title}}</h5>
-              <p class="card-text">{{i.description}}</p>
-              
-              <a class="btn btn-primary listing-button" href="{% url 'listingpage' i.id %}">Details</a>
+              <p class="card-text">Owner: {{i.user}}</p>
+              <p class="card-text">Final price: ${{i.price}}</p>
+              <!--<a class="btn btn-primary listing-button" href="{% url 'listingpage' i.id %}">Details</a>-->
               <p class="card-text"><small class="text-muted">{{i.time}}</small></p>
             </div>
           </div>

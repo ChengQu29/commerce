@@ -4,8 +4,7 @@
 <div class="container">
     <form action="{% url 'create' %}" method='post' >
         {% csrf_token %}
-        {{ createform.as_p }}
-        
+        {{ createform.as_p }} <!--will render form wrapped in <p> tags see django documentation-->
         <input type="submit" value="submit">
     </form>
 </div>

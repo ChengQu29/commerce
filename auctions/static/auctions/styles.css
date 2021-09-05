@@ -1,10 +1,24 @@
 body {
     margin-top: 0px;
-    margin-right: 20px;
+    margin:auto;
     background-color: white;
+    padding: 30px
+    
+}
+
+#card-listings{
+    background-color: white;
+    margin-left: 1%;
+    margin-top:4%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 img {
+    max-width: 50%;
+    height: auto;
+}
+
+.card-img {
     max-width: 100%;
     height: auto;
 }
@@ -25,10 +39,14 @@ h1 {
     padding: 0;
 }
 
+.form-group{
+    width: 300px;
+}
+
 textarea {
     display: block;
-    height: 50vh;
-    width: 80%;
+    height: 50%;
+    width: 100%;
 }
 
 #title {

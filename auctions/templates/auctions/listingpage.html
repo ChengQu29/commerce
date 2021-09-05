@@ -22,7 +22,7 @@ Listing: {{ item.title }}
         <div class="row p-2">
             <p>{{ item.description }}</p>
         </div>
-<! -- add to watchlist>
+<!-- add to watchlist-->
         <div class="row p-2">
             {% if added %}
             <form action="{% url 'removewatch' %}" method="post">
@@ -38,11 +38,11 @@ Listing: {{ item.title }}
             </form>
             {% endif %}
         </div>
-<! -- display price>
+<!-- display price-->
         <div class="row p-2">
             <h3>Current Price: $ {{ item.price }}</h3>
         </div>
-<! -- to close bid if you're the owner>
+<!-- to close bid if you're the owner-->
         <div class="row p-2">
         {% if user.is_authenticated %}
         {% if owner %}     
@@ -56,12 +56,12 @@ Listing: {{ item.title }}
         {% endif %}
         {% endif %}
         </div>
-<! -- to bid>
+<!-- to bid-->
         <div class="row p-2">
         {% if user.is_authenticated %}
             <form action="{% url 'bid' %}" method="post">
                 {% csrf_token %}
-                <! -- next line is important, as it provides bid function an id>
+                <!-- next line provides bid function an id-->
                 <input type="hidden" name="id" value="{{ item.id }}">
                 {{ bidform }}
                 <button class="btn-primary" type="submit">Place bid</button>
@@ -71,12 +71,11 @@ Listing: {{ item.title }}
             <p><a href="{% url 'login' %}">Sign in</a> to place a bid</p>
         {% endif %}
         </div>
-<! -- to provide comment>
+<!-- to provide comment-->
         <div class="row p-2">
         {% if user.is_authenticated %}
             <form action="{% url 'comment' %}" method="post">
                 {% csrf_token %}
-                <! -- next line is important, as it provides comment function an id>
                 <input type="hidden" name="id" value="{{ item.id }}">
                 {{ commentform }}
                 <br>
@@ -86,7 +85,7 @@ Listing: {{ item.title }}
             <p><a href="{% url 'login' %}">Sign in</a> to provide comments</p>
         {% endif %}
         </div>
-<! -- display comment>
+<!-- display comment-->
         <div class="row p-2">
             <h4>All Comments:</h4>
         </div>
