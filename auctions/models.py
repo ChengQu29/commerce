@@ -8,6 +8,7 @@ class User(AbstractUser):
 
 class Listing(models.Model):
     CATEGORIES = [
+        ('Art', 'Art'),
         ('Cars and Vehicles', 'Cars and Vehicles'),
         ('Furniture', 'Furniture'),
         ('Electronics', 'Electronics'),
@@ -20,9 +21,9 @@ class Listing(models.Model):
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=64)
-    description = models.TextField(max_length=1000)
+    description = models.TextField(max_length=500)
     price = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    link = models.URLField(null=True, blank=True) # refer to django documentation for model Field options
+    link = models.URLField(blank=True) # refer to django documentation for model Field options
     time = models.CharField(max_length=64)
     winner = models.ForeignKey(User, null=True, default=None, on_delete=models.PROTECT, related_name="winning_listings")
     active = models.BooleanField(default=True)
