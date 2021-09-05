@@ -151,6 +151,12 @@ def listingpage(request, id):
         except:
             added = False
 
+        try:
+            items = Watchlist.objects.filter(user=request.user)
+            wcount = len(items)
+            print(wcount)
+        except:
+            wcount = None
         return render(request, "auctions/listingpage.html", {
             "item": item,
             "comments": comments,
@@ -158,7 +164,8 @@ def listingpage(request, id):
             "commentform": commentform,
             "bidform": bidform,
             "added": added,
-            "owner": owner
+            "owner": owner,
+            "wcount": wcount
         })
     else:
         return render(request, "auctions/listingpage.html", {

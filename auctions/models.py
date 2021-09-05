@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+import datetime
 
 
 class User(AbstractUser):
@@ -28,7 +29,7 @@ class Listing(models.Model):
     winner = models.ForeignKey(User, null=True, default=None, on_delete=models.PROTECT, related_name="winning_listings")
     active = models.BooleanField(default=True)
     category = models.CharField(blank=True, choices=CATEGORIES, max_length=64) #choose from the CATEGORIES
-
+    print(time)
     bids = models.ManyToManyField('Bid', blank=True, related_name='bids')
     
     def __str__(self):
