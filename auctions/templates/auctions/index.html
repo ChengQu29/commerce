@@ -1,9 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
 
-</div>
 <div class="container" id="listings">
     {% for i in items %}
     <div class="card mb-3" style="max-width: 540px;" id="card-listings">
@@ -16,7 +14,7 @@
               <h5 class="card-title">{{i.title}}</h5>
               <p class="card-text">{{i.description}}</p>
               <p class="card-text">${{i.price}}</p>
-              <a class="btn btn-primary listing-button" href="{% url 'listingpage' i.id %}">Details</a>
+              <a class="btn btn-outline-dark listing-button" href="{% url 'listingpage' i.id %}">Details</a>
               <p class="card-text"><small class="text-muted">{{i.time}}</small></p>
             </div>
           </div>
