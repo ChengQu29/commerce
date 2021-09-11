@@ -4,6 +4,26 @@ body {
     padding: 40px
 }
 
+h1{
+    display: grid;
+    justify-content: center;
+    margin-top: 0px;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #a2a9b1;
+    font: 3em Fantasy;
+}
+
+.nav{
+    
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    display: grid;
+    justify-content: center;
+  }
+
 #card-listings{
     background-color: #e9d5bb;
     margin-left: 1%;
@@ -40,14 +60,6 @@ img {
 }
 code {
     white-space: pre;
-}
-
-h1 {
-    margin-top: 0px;
-    padding-top: 20px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #a2a9b1;
-    font: 3em Fantasy;
 }
 
 h2,h3 {
